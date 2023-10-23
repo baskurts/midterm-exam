@@ -73,17 +73,42 @@ class time1:
 
     @staticmethod
     def sort(data, first: int, last: int):
-        for i in range(first + 1, last + 1):
-            key = data[i]
-            j = i - 1
-            while j >= first and key < data[j]:
-                data[j + 1] = data[j]
-                j -= 1
-            data[j + 1] = key
+        i = 1 
+        j = 0
+        nextVal = 0
+
+        while i <= last - first:
+            nextVal = data[first + i]
+
+            j = first + i
+            while j > first and data[j - 1] > nextVal:
+                data[j] = data[j - 1] 
+                data[j - 1] = nextVal
+                j = j - 1
+
+            i = i + 1
     
     @staticmethod
-    def search(a, first: int, last: int, target: str):
-        for i in range(first, last + 1):
-            if a[i] == target:
-                return i
-        return -1
+    def search(a, first: int, last: int, target: str): 
+        found = False 
+        size = last - first + 1  
+        middle = int(first + size / 2)
+
+        if size <= 0:
+            return -1
+        else:
+            while size > 0 and not found:
+                if a[middle] == target:
+                    found = True
+                elif a[middle] > target:
+                    size = int(size / 2)
+                else:
+                    first = middle + 1
+                    size = int((size - 1) / 2)
+
+                middle = int(first + size / 2)
+
+        if found:
+            return middle
+        else:
+            return -1
